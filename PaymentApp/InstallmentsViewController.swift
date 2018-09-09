@@ -8,7 +8,6 @@
 
 import UIKit
 import Alamofire
-import SVProgressHUD
 import SwiftyJSON
 
 class InstallmentsViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
@@ -93,13 +92,11 @@ class InstallmentsViewController: UIViewController, UIPickerViewDataSource, UIPi
         let issuer = selectedBank["id"].stringValue
         
         let myParameters: Parameters = ["public_key": "444a9ef5-8a6b-429f-abdf-587639155d88","amount":amount, "payment_method_id":payment_method_id, "issuer.id": issuer]
-        print(myParameters)
         let urlString: String! = "https://api.mercadopago.com/v1/payment_methods/installments"
         Alamofire.request(urlString, method: .get, parameters: myParameters).responseJSON { response in
             if let status = response.response?.statusCode {
                 switch(status){
                 case 200:
-                    print("200")
                     if let result = response.result.value {
                         let json = JSON(result)
                         self.installments.removeAll()

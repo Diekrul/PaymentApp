@@ -8,7 +8,6 @@
 
 import UIKit
 import Alamofire
-import SVProgressHUD
 import SwiftyJSON
 
 
@@ -95,10 +94,8 @@ class PaymentMethodViewController: UIViewController,UITableViewDataSource,UITabl
             if let status = response.response?.statusCode {
                 switch(status){
                 case 200:
-                    print("200")
                     if let result = response.result.value {
                         let json = JSON(result)
-//                        print(json)
                         self.arrayOfIdNameThumb.removeAll()
                         for jsonObject in json.arrayValue {
                             let id = jsonObject["id"].stringValue
@@ -110,11 +107,10 @@ class PaymentMethodViewController: UIViewController,UITableViewDataSource,UITabl
                         self.loadData()
                     }
                 default:
-                    SVProgressHUD.showError(withStatus: "Error \(status)")
+                    print("error \(status)")
                 }
             }else{
-                SVProgressHUD.dismiss()
-                SVProgressHUD.showError(withStatus: "Verifique su conexión e intentelo nuevamente")
+                print("Verifique su conexión a internet")
             }
         }
     }

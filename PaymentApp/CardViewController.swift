@@ -8,7 +8,6 @@
 
 import UIKit
 import Alamofire
-import SVProgressHUD
 import SwiftyJSON
 
 class CardViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -80,9 +79,6 @@ class CardViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.performSegue(withIdentifier: "fromBankToInstallments", sender: arrayOfIdNameThumb[indexPath.row])
-
-//        let selectedPayment: String! = arrayOfIdNameThumb[indexPath.row]["id"].stringValue
-//        self.performSegue(withIdentifier: "fromPaymentToCard", sender: selectedPayment)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -114,13 +110,11 @@ class CardViewController: UIViewController, UITableViewDelegate, UITableViewData
         startLoading()
         var payment_method_id = paymentMethodSelected["id"].stringValue
         let myParameters: Parameters = ["public_key": "444a9ef5-8a6b-429f-abdf-587639155d88", "payment_method_id":payment_method_id]
-        print(myParameters)
         let urlString: String! = "https://api.mercadopago.com/v1/payment_methods/card_issuers"
         Alamofire.request(urlString, method: .get, parameters: myParameters).responseJSON { response in
             if let status = response.response?.statusCode {
                 switch(status){
                 case 200:
-                    print("200")
                     if let result = response.result.value {
                         let json = JSON(result)
                         self.arrayOfIdNameThumb.removeAll()
